@@ -15,10 +15,10 @@ function App() {
         type="button"
         aria-label="Open shopping bag"
         title="Öppna varukorg"
-        className="absolute right-43 top-12 cursor-pointer opacity-0"
+        className="absolute right-57 top-3 cursor-pointer opacity-0"
         onClick={() => setIsCartOpen(true)}
       >
-        <FiShoppingBag size={20} />
+        <FiShoppingBag size={24} />
       </button>
 
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

@@ -75,7 +75,7 @@ export const initialCartItems: CartItem[] = [
       id: 1,
       name: 'Cool Sensation trosa med långa ben - Extra täckning',
       price: 349,
-      image: trosa4,
+      image: bh1,
       size: '34/36',
       color: 'Beige',
       inStock: true
