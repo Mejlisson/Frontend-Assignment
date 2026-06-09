@@ -91,8 +91,21 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 		if (!container) {
 			return;
 		}
+		//Scroll steps based on mobile or desktop 
+		const firstCard = container.firstElementChild as HTMLElement | null;
+		const containerStyles = window.getComputedStyle(container);
+		const gap = Number.parseFloat(containerStyles.columnGap || containerStyles.gap || '0');
+		const cardStep = (firstCard?.offsetWidth ?? 0) + gap;
+		const isMobile = window.matchMedia('(max-width: 639px)').matches;
+		const step = cardStep > 0
+			? isMobile
+				? cardStep
+				: cardStep * 2
+			: isMobile
+				? container.clientWidth * 0.75
+				: 420;
 
-		const offset = direction === 'right' ? 420 : -420;
+		const offset = direction === 'right' ? step : -step;
 		container.scrollBy({ left: offset, behavior: 'smooth' });
 	};
 
@@ -144,7 +157,7 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 						</h2>
 						<button
 							type="button"
-							aria-label="Stang varukorg"
+							aria-label="Stäng varukorg"
 							onClick={handleCloseModal}
 							className="ml-auto -mr-4 flex h-10 w-12 items-center justify-center p-0 text-(--color-text-primary) cursor-pointer"
 						>
