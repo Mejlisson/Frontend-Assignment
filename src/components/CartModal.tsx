@@ -218,7 +218,7 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 										aria-label="Scroll to left"
 										onClick={() => handleCrossSellScroll('left')}
 										disabled={!canScrollLeft}
-										className="absolute left-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-(--color-text-primary) shadow-sm cursor-pointer disabled:opacity-0"
+										className="absolute left-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 hover:bg-white/100 text-(--color-text-primary) shadow-sm cursor-pointer disabled:opacity-0"
 									>
 										<HiChevronLeft size={22} />
 									</button>
@@ -227,7 +227,7 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 										aria-label="Scroll to right"
 										onClick={() => handleCrossSellScroll('right')}
 										disabled={!canScrollRight}
-										className="absolute right-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-(--color-text-primary) shadow-sm cursor-pointer disabled:opacity-0"
+										className="absolute right-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 hover:bg-white/100 text-(--color-text-primary) shadow-sm cursor-pointer disabled:opacity-0"
 									>
 										<HiChevronRight size={22} />
 									</button>

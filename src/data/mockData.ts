@@ -65,6 +65,15 @@ export const crossSellProducts: Product[] = [
     size: '42/44',
     color: 'Grå',
     inStock: true
+  },
+  {
+    id: 7,
+    name: 'Cotton maxitrosa',
+    price: 349,
+    image: trosa4,
+    size: '36/38',
+    color: 'Orange',
+    inStock: true
   }
 ];
 

@@ -112,7 +112,7 @@ function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 								type="button"
 								aria-label="Minska antal"
 								onClick={() => triggerConfirmation('minus')}
-								className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
+								className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
 							>
 								<span className="relative h-[18px] w-[18px] overflow-hidden">
 									<FiMinus
@@ -132,7 +132,7 @@ function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 								type="button"
 								aria-label="Öka antal"
 								onClick={() => triggerConfirmation('plus')}
-								className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
+								className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
 							>
 								<span className="relative h-[18px] w-[18px] overflow-hidden">
 									<FiPlus
