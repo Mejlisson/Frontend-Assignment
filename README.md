@@ -1,9 +1,25 @@
 # Frontend Assignment
 
-Ren grund med React, TypeScript och Vite.
+Built with React, TypeScript, Vite, and Tailwind CSS.
 
-## Kommandon
+## Quick Start
 
-- npm run dev
-- npm run build
-- npm run preview
+1. Install dependencies:
+   npm install
+2. Start the project:
+   npm run dev
+
+## Scripts
+
+- `npm run dev` - starts the development server
+- `npm run build` - builds the project for production
+- `npm run preview` - previews the production build
+- `npm run lint` - runs ESLint
+
+## Features
+
+- Dynamic cart with quantity controls (+/-)
+- Subtotal, shipping, and total price calculation
+- Free shipping logic from 900 kr
+- Cross-sell section with Add to cart
+- Empty cart state and responsive modal
