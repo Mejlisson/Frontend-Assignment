@@ -1,18 +1,101 @@
-import { FiMinus, FiPlus } from 'react-icons/fi';
+import { useEffect, useRef, useState } from 'react';
+import { FiCheck, FiMinus, FiPlus } from 'react-icons/fi';
 import type { CartItem as CartItemModel } from '../data/mockData';
 
 type CartItemProps = {
 	item: CartItemModel;
+	onIncrease: () => void;
+	onDecrease: () => void;
 };
 
-function CartItem({ item }: CartItemProps) {
+type QuantityButton = 'minus' | 'plus';
+type AnimationPhase = 'idle' | 'slideOut' | 'check' | 'slideIn';
+
+function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 	const { product, quantity } = item;
+	const linePrice = product.price * quantity;
+	const [animationState, setAnimationState] = useState<{ button: QuantityButton | null; phase: AnimationPhase }>({
+		button: null,
+		phase: 'idle'
+	});
+	const timersRef = useRef<number[]>([]);
+
+	useEffect(() => {
+		return () => {
+			timersRef.current.forEach((timer) => window.clearTimeout(timer));
+		};
+	}, []);
+
+	const triggerConfirmation = (button: QuantityButton) => {
+		if (button === 'plus') {
+			onIncrease();
+		} else {
+			onDecrease();
+		}
+
+		timersRef.current.forEach((timer) => window.clearTimeout(timer));
+		timersRef.current = [];
+
+		setAnimationState({ button, phase: 'slideOut' });
+
+		timersRef.current.push(
+			window.setTimeout(() => {
+				setAnimationState({ button, phase: 'check' });
+			}, 360)
+		);
+
+		timersRef.current.push(
+			window.setTimeout(() => {
+				setAnimationState({ button, phase: 'slideIn' });
+			}, 900)
+		);
+
+		timersRef.current.push(
+			window.setTimeout(() => {
+				setAnimationState({ button: null, phase: 'idle' });
+			}, 1200)
+		);
+	};
+
+	const getOriginalIconClass = (button: QuantityButton) => {
+		const isCurrentButton = animationState.button === button;
+		if (!isCurrentButton || animationState.phase === 'idle') {
+			return 'translate-y-0 opacity-100';
+		}
+
+		if (animationState.phase === 'slideOut') {
+			return 'translate-y-5 opacity-0';
+		}
+
+		if (animationState.phase === 'check') {
+			return '-translate-y-5 opacity-0';
+		}
+
+		return 'translate-y-5 opacity-0';
+	};
+
+	const getCheckIconClass = (button: QuantityButton) => {
+		const isCurrentButton = animationState.button === button;
+		if (!isCurrentButton || animationState.phase === 'idle') {
+			return '-translate-y-5 opacity-0';
+		}
+
+		if (animationState.phase === 'slideOut') {
+			return '-translate-y-5 opacity-0';
+		}
+
+		if (animationState.phase === 'check') {
+			return 'translate-y-0 opacity-100';
+		}
+
+		return 'translate-y-5 opacity-0';
+	};
 
 	return (
-		<article className="flex gap-4 pb-4" aria-label={product.name}>
+		<article className="flex gap-4 pb-0" aria-label={product.name}>
 			<img src={product.image} alt={product.name} className="h-[144px] w-[110px] object-cover"/>
 
-			<div className="flex min-w-95 flex-1 flex-col justify-between">
+			<div className="flex min-w-0 flex-1 flex-col justify-between">
 				<div>
 					<h3 className="text-[16px] font-semibold leading-4 text-(--color-text-primary)">{product.name}</h3>
 					<p className="text-[14px] font-medium leading-6 text-(--color-text-primary)">
@@ -24,29 +107,47 @@ function CartItem({ item }: CartItemProps) {
 				</div>
 
 				<div className="flex items-end justify-between">
-					<div className="overflow-hidden rounded-md">
-						<div className="flex h-8 items-stretch">
+					<div className="flex items-center gap-6">
 							<button
 								type="button"
 								aria-label="Minska antal"
-								className="flex w-8 items-center justify-center bg-(--color-quantity-toggle) text-(--color-button-text) transition-opacity hover:opacity-90"
+								onClick={() => triggerConfirmation('minus')}
+								className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
 							>
-								<FiMinus size={18} />
+								<span className="relative h-[18px] w-[18px] overflow-hidden">
+									<FiMinus
+										size={17}
+										className={`absolute left-0 top-0 transition-all duration-300 ${getOriginalIconClass('minus')}`}
+									/>
+									<FiCheck
+										size={16}
+										className={`absolute left-0 top-0 transition-all duration-300 ${getCheckIconClass('minus')}`}
+									/>
+								</span>
 							</button>
-							<span className="flex w-15 items-center justify-center bg-(--color-primary-green-soft) text-[16px] font-semibold leading-none text-(--color-quantity-value)">
+							<span className="flex min-w-4 items-center justify-center text-[16px] font-bold leading-none text-(--color-quantity-value)">
 								{quantity}
 							</span>
 							<button
 								type="button"
 								aria-label="Öka antal"
-								className="flex w-8 items-center justify-center bg-(--color-quantity-toggle) text-(--color-button-text) transition-opacity hover:opacity-90"
+								onClick={() => triggerConfirmation('plus')}
+								className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
 							>
-								<FiPlus size={18} />
+								<span className="relative h-[18px] w-[18px] overflow-hidden">
+									<FiPlus
+										size={17}
+										className={`absolute left-0 top-0 transition-all duration-300 ${getOriginalIconClass('plus')}`}
+									/>
+									<FiCheck
+										size={16}
+										className={`absolute left-0 top-0 transition-all duration-300 ${getCheckIconClass('plus')}`}
+									/>
+								</span>
 							</button>
-						</div>
 					</div>
 
-					<p className="text-[16px] font-bold leading-none text-(--color-text-primary)">{product.price} kr</p>
+					<p className="text-[16px] font-bold leading-none text-(--color-text-primary)">{linePrice} kr</p>
 				</div>
 			</div>
 		</article>

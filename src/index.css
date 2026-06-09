@@ -2,7 +2,8 @@
 
 /* Global styles and CSS variables */
 :root {
-	--color-primary-green: #598c69;
+	--color-primary-green: #3B8E66;
+	--color-primary-green-dark: #215B41;
 	--color-primary-green-soft: #ddecd5;
 	--color-text-primary: #383838;
 	--color-text-secondary: #474d4e;
@@ -11,7 +12,7 @@
 	--color-surface-soft: #f2f5f5;
 	--color-border: #b6bebf;
 	--color-divider: rgba(182, 190, 191, 0.5);
-	--color-button-text: #faf9f6;
+	--color-button-text: rgb(255, 255, 255);
 	--color-quantity-value: #121212;
 	--color-quantity-toggle: #598c69;
 }

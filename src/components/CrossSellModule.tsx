@@ -3,9 +3,10 @@ import type { Product } from '../data/mockData';
 type CrossSellModuleProps = {
 	productId: number;
 	products: Product[];
+	onAdd: (productId: number) => void;
 };
 
-function CrossSellModule({ productId, products }: CrossSellModuleProps) {
+function CrossSellModule({ productId, products, onAdd }: CrossSellModuleProps) {
 	const product = products.find((item) => item.id === productId);
 
 	if (!product) {
@@ -25,7 +26,8 @@ function CrossSellModule({ productId, products }: CrossSellModuleProps) {
 			</p>
 			<button
 				type="button"
-				className="mt-2 h-12 w-full rounded-sm bg-(--color-primary-green) text-[18px] font-medium leading-none text-(--color-button-text)"
+				onClick={() => onAdd(product.id)}
+				className="mt-2 h-12 w-full rounded-sm bg-(--color-primary-green) text-[18px] font-medium leading-none text-(--color-button-text) transition-colors hover:bg-(--color-primary-green-dark)"
 			>
 				Add
 			</button>
