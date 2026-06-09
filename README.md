@@ -13,8 +13,6 @@ Built with React, TypeScript, Vite, and Tailwind CSS.
 
 - `npm run dev` - starts the development server
 - `npm run build` - builds the project for production
-- `npm run preview` - previews the production build
-- `npm run lint` - runs ESLint
 
 ## Features
 
