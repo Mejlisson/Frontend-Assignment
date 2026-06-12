@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiCheck, FiMinus, FiPlus } from 'react-icons/fi';
 import type { CartItem as CartItemModel } from '../data/mockData';
 
@@ -9,86 +9,55 @@ type CartItemProps = {
 };
 
 type QuantityButton = 'minus' | 'plus';
-type AnimationPhase = 'idle' | 'slideOut' | 'check' | 'slideIn';
 
 function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 	const { product, quantity } = item;
 	const linePrice = product.price * quantity;
-	const [animationState, setAnimationState] = useState<{ button: QuantityButton | null; phase: AnimationPhase }>({
-		button: null,
-		phase: 'idle'
-	});
-	const timersRef = useRef<number[]>([]);
+	const [activeConfirmationButton, setActiveConfirmationButton] = useState<QuantityButton | null>(null);
+	const [isConfirmed, setIsConfirmed] = useState(false);
+	const [confirmationRun, setConfirmationRun] = useState(0);
 
+	
 	useEffect(() => {
-		return () => {
-			timersRef.current.forEach((timer) => window.clearTimeout(timer));
-		};
-	}, []);
+		if (!isConfirmed) {
+			return;
+		}
+		const timer = window.setTimeout(() => {
+			setIsConfirmed(false);
+			setActiveConfirmationButton(null);
+		}, 1000);// Reset confirmation button state after 1 second
 
-	const triggerConfirmation = (button: QuantityButton) => {
+		return () => {
+			window.clearTimeout(timer);
+		};
+	}, [isConfirmed, confirmationRun]);
+
+	const handleQuantityChange = (button: QuantityButton) => {
 		if (button === 'plus') {
 			onIncrease();
 		} else {
 			onDecrease();
 		}
 
-		timersRef.current.forEach((timer) => window.clearTimeout(timer));
-		timersRef.current = [];
-
-		setAnimationState({ button, phase: 'slideOut' });
-
-		timersRef.current.push(
-			window.setTimeout(() => {
-				setAnimationState({ button, phase: 'check' });
-			}, 360)
-		);
-
-		timersRef.current.push(
-			window.setTimeout(() => {
-				setAnimationState({ button, phase: 'slideIn' });
-			}, 900)
-		);
-
-		timersRef.current.push(
-			window.setTimeout(() => {
-				setAnimationState({ button: null, phase: 'idle' });
-			}, 1200)
-		);
+		setActiveConfirmationButton(button);
+		setIsConfirmed(true);
+		setConfirmationRun((current) => current + 1);
 	};
 
 	const getOriginalIconClass = (button: QuantityButton) => {
-		const isCurrentButton = animationState.button === button;
-		if (!isCurrentButton || animationState.phase === 'idle') {
+		const isCurrentButton = activeConfirmationButton === button;
+		if (!isCurrentButton || !isConfirmed) {
 			return 'translate-y-0 opacity-100';
 		}
-
-		if (animationState.phase === 'slideOut') {
-			return 'translate-y-5 opacity-0';
-		}
-
-		if (animationState.phase === 'check') {
-			return '-translate-y-5 opacity-0';
-		}
-
 		return 'translate-y-5 opacity-0';
 	};
 
 	const getCheckIconClass = (button: QuantityButton) => {
-		const isCurrentButton = animationState.button === button;
-		if (!isCurrentButton || animationState.phase === 'idle') {
+		const isCurrentButton = activeConfirmationButton === button;
+		if (!isCurrentButton || !isConfirmed) {
 			return '-translate-y-5 opacity-0';
 		}
-
-		if (animationState.phase === 'slideOut') {
-			return '-translate-y-5 opacity-0';
-		}
-
-		if (animationState.phase === 'check') {
-			return 'translate-y-0 opacity-100';
-		}
-
-		return 'translate-y-5 opacity-0';
+		return 'translate-y-0 opacity-100';
 	};
 
 	return (
@@ -111,7 +80,7 @@ function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 							<button
 								type="button"
 								aria-label="Minska antal"
-								onClick={() => triggerConfirmation('minus')}
+								onClick={() => handleQuantityChange('minus')}
 								className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
 							>
 								<span className="relative h-[18px] w-[18px] overflow-hidden">
@@ -120,7 +89,7 @@ function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 										className={`absolute left-0 top-0 transition-all duration-300 ${getOriginalIconClass('minus')}`}
 									/>
 									<FiCheck
-										size={16}
+										size={17}
 										className={`absolute left-0 top-0 transition-all duration-300 ${getCheckIconClass('minus')}`}
 									/>
 								</span>
@@ -131,7 +100,7 @@ function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 							<button
 								type="button"
 								aria-label="Öka antal"
-								onClick={() => triggerConfirmation('plus')}
+								onClick={() => handleQuantityChange('plus')}
 								className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e7e4df] text-[#6a6a6a] transition-all duration-150 active:scale-95 hover:opacity-90"
 							>
 								<span className="relative h-[18px] w-[18px] overflow-hidden">
@@ -140,7 +109,7 @@ function CartItem({ item, onIncrease, onDecrease }: CartItemProps) {
 										className={`absolute left-0 top-0 transition-all duration-300 ${getOriginalIconClass('plus')}`}
 									/>
 									<FiCheck
-										size={16}
+										size={17}
 										className={`absolute left-0 top-0 transition-all duration-300 ${getCheckIconClass('plus')}`}
 									/>
 								</span>

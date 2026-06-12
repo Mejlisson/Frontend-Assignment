@@ -6,7 +6,7 @@ import swishLogo from '../assets/Swish.svg';
 import visaLogo from '../assets/Visa.svg';
 import mastercardLogo from '../assets/Mastercard.svg';
 import CartItem from './CartItem.tsx';
-import CrossSellModule from './CrossSellModule.tsx';
+import CrossSellCard from './CrossSellCard.tsx';
 import { crossSellProducts, initialCartItems } from '../data/mockData';
 import type { CartItem as CartItemModel } from '../data/mockData';
 
@@ -29,9 +29,9 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 	const [canScrollLeft, setCanScrollLeft] = useState(false);
 	const [canScrollRight, setCanScrollRight] = useState(false);
 
-	const repeatedCrossSellIds = Array.from(
-		{ length: 12 },
-		(_, index) => crossSellProducts[index % crossSellProducts.length].id
+	const repeatedCrossSellProducts = Array.from(
+		{ length: 16 },
+		(_, index) => crossSellProducts[index % crossSellProducts.length]
 	);
 
 	const resetCartItems = () => initialCartItems.map((item) => ({ ...item }));
@@ -149,7 +149,7 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 				onClick={handleCloseModal}
 				className="absolute inset-0 bg-black/30"
 			/>
-			<section className="absolute right-0 top-0 h-full w-full sm:w-[648px] bg-(--color-surface) font-['Sofia_Pro','Avenir_Next_LT',sans-serif]">
+			<section className="absolute right-0 top-0 h-full w-full sm:w-[648px] bg-(--color-surface)">
 				<div className="flex h-full flex-col px-6 py-4">
 					<header className="flex items-center justify-between border-b border-(--color-border)/30 pb-4">
 						<h2 className="hidden text-[18px] font-semibold tracking-[-0.46px] text-(--color-text-primary) sm:block">
@@ -217,15 +217,15 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 										className="no-scrollbar flex gap-3 overflow-x-auto pb-1"
 									>
 										{/* Mapping products */}
-										{repeatedCrossSellIds.map((productId, index) => (
-											<CrossSellModule
-												key={`${productId}-${index}`}
-												productId={productId}
-												products={crossSellProducts}
+										{repeatedCrossSellProducts.map((product, index) => (
+											<CrossSellCard
+												key={`${product.id}-${index}`}
+												product={product}
 												onAdd={handleAddCrossSell}
 											/>
 										))}
 									</div>
+									{/* Navigation buttons */}
 									<button
 										type="button"
 										aria-label="Scroll to left"
@@ -256,7 +256,7 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 									</div>
 									<div className="flex items-center justify-between text-[16px] font-normal leading-5">
 										<span>Leverans</span>
-										<span>{shipping} kr</span>
+										<span>{shipping === 0 ? 'Fri frakt' : `${shipping} kr`}</span>
 									</div>
 									<div className="flex items-center justify-between pt-3 text-[18px] font-bold leading-8.25">
 										<span>Totalsumma</span>
@@ -268,7 +268,7 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
 									type="button"
 									className="mt-4 h-[48px] w-full rounded-[5px] bg-(--color-primary-green) text-[16px] font-bold text-(--color-button-text) transition-colors hover:bg-(--color-primary-green-dark)"
 								>
-									Ga till kassan
+									Gå till kassan
 								</button>
 
 								<div className="mt-4 flex items-center justify-center gap-4 lg:gap-6 py-2">

@@ -1,18 +1,11 @@
 import type { Product } from '../data/mockData';
 
-type CrossSellModuleProps = {
-	productId: number;
-	products: Product[];
+type CrossSellCardProps = {
+	product: Product;
 	onAdd: (productId: number) => void;
 };
 
-function CrossSellModule({ productId, products, onAdd }: CrossSellModuleProps) {
-	const product = products.find((item) => item.id === productId);
-
-	if (!product) {
-		return null;
-	}
-
+function CrossSellCard({ product, onAdd }: CrossSellCardProps) {
 	return (
 		<article className="h-fit w-35 min-w-35 max-w-35 overflow-hidden rounded-sm bg-white p-3" aria-label={product.name}>
 			<div className="flex justify-center bg-white">
@@ -35,4 +28,4 @@ function CrossSellModule({ productId, products, onAdd }: CrossSellModuleProps) {
 	);
 }
 
-export default CrossSellModule;
+export default CrossSellCard;
