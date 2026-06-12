@@ -1,18 +1,32 @@
 # Frontend Assignment
 
-Built with React, TypeScript, Vite, and Tailwind CSS.
+Tech Stack: React 19, TypeScript Css (v4), Vite, React Icons (`fi`, `hi2`), and Tailwind CSS.
 
 ## Quick Start
 
-1. Install dependencies:
+1. Clone the repository:
+
+   ```bash
+   git clone <repo-url>
+   ```
+
+2. Install dependencies:
+
+   ```bash
    npm install
-2. Start the project:
+   ```
+
+3. Start the development server:
+
+   ```bash
    npm run dev
+   ```
 
-## Scripts
+## Key Implementations
 
-- `npm run dev` - starts the development server
-- `npm run build` - builds the project for production
+- **Micro-interactions:** Custom quantity-button animations with temporary checkmark feedback after updates.
+- **Performance:** Cross-sell carousel navigation tracks scroll state and updates via `requestAnimationFrame` for smooth controls.
+- **Maintainability:** Separation of concerns in components and centralized design tokens using CSS variables.
 
 ## Features
 
